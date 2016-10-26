@@ -15,19 +15,19 @@ class Q007Spec extends MacroSpec {
   def validLar(lar: LoanApplicationRegister) = lar.copy(actionTakenType = 4)
   def invalidLar(lar: LoanApplicationRegister) = lar.copy(actionTakenType = 2)
 
-  property(s"be valid if not accepted < $multiplier * total") {
+  property(s"be valid if withdrawn < $multiplier * total") {
     val numOfGoodLars = (sampleSize * (1.0 - multiplier)).toInt + 1
     val validLarSource = newLarSource(testLars, numOfGoodLars, validLar(_), invalidLar(_))
     validLarSource.mustPass
   }
 
-  property(s"be valid if not accepted = $multiplier * total") {
+  property(s"be valid if withdrawn = $multiplier * total") {
     val numOfGoodLars = (sampleSize * (1.0 - multiplier)).toInt
     val validLarSource = newLarSource(testLars, numOfGoodLars, validLar(_), invalidLar(_))
     validLarSource.mustPass
   }
 
-  property(s"be invalid if not accepted > $multiplier * total") {
+  property(s"be invalid if withdrawn > $multiplier * total") {
     val numOfGoodLars = (sampleSize * (1.0 - multiplier)).toInt - 1
     val invalidLarSource = newLarSource(testLars, numOfGoodLars, validLar(_), invalidLar(_))
     invalidLarSource.mustFail
